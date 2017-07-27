@@ -54,9 +54,15 @@ function submit_onclick() {
             // you can see the result from the console
             // tab of the developer tools
             console.log(result);
-            $('#myChart').fadeIn()
-        	myChart.data.datasets[0].data = result.classification
-        	myChart.update()
+            $('#myChartA').fadeIn()
+        	myChartA.data.datasets[0].data = [result.classification[0], 1-result.classification[0]]
+        	myChartA.update()
+            $('#myChartB').fadeIn()
+        	myChartB.data.datasets[0].data = [result.classification[1], 1-result.classification[1]]
+        	myChartB.update()
+            $('#myChartC').fadeIn()
+        	myChartC.data.datasets[0].data = [result.classification[2], 1-result.classification[2]]
+        	myChartC.update()
         },
         error: function(xhr, resp, text) {
             console.log(xhr, resp, text);

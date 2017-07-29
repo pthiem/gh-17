@@ -66,7 +66,7 @@ function getData(region, measure, callback) {
         success : function(data) {
             // you can see the result from the console
             // tab of the developer tools
-            console.log(data)
+            console.log("ajax data", data)
             callback(region, measure, data)
         },
         error: function(xhr, resp, text) {
@@ -79,20 +79,31 @@ function getData(region, measure, callback) {
 // Will redraw the charts 
 function submit_onclick() 
 {
-	region = "2114"
-	measures = ["70-74 years", "Oceanic"]
 	
-	// for each measure
-	updateChart("2114", "70-74 years")
+	var region = "";
+	$('#form-region option:selected').each(function(index, brand) {
+		region = $(this).val();
+	});
+	
+	var measures = []
+	$('#form-measure  option:selected').each(function(index, brand){
+		measures.push($(this).val());;
+	});
+
+	if (region != "") {
+		measures.forEach(function(measure) {
+			updateChart(region, measure)
+		})
+	}
 	
 	// remove any charts that are no longer selected
-	
 	
 	return false
 }
 
 function updateChart(region, measure) 
 {
+	console.log("updateChart", region, measure)
 	// get the data for the measure, then update it
 	getData(region, measure, drawChartWithData)
 }

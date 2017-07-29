@@ -110,7 +110,7 @@ function drawChartWithData(region, measure, data)
 	if (!chart) {
 		div = $("<div class='graph'></div>"); 
 		$("#container").append(div)
-		
+
 		Highcharts.chart(div[0], {
 		    chart: {
 		        zoomType: 'xy'
@@ -142,22 +142,27 @@ function drawChartWithData(region, measure, data)
 		        name: measure,
 		        type: 'column',
 		        yAxis: 0,
-		        data: data.values,
-//		        tooltip: {
-//		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
-//		        }
+		        //data: data.values,
+		        data: [data.values[0], data.values[1], data.values[2],
+		               {y:data.values[3], color:'#cc0099'},
+		               {y:data.values[4], color:'#cc0099'},
+		               {y:data.values[5], color:'#cc0099'}],
+		        tooltip: {
+		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.0f}</b> '
+		        },
 		    }, {
 		        name: measure + ' error',
 		        type: 'errorbar',
 		        yAxis: 0,
 		        data: data.errors,
 		        tooltip: {
-		            pointFormat: '(error range: {point.low}-{point.high})<br/>'
+		            pointFormat: '<br/>(error range: {point.low:.0f}-{point.high:.0f})<br/>'
 		        }
 		    }],
 		    region: region,
 		    measure: measure
 		});	
+		
 	}
 	
 }

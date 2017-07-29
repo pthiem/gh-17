@@ -102,7 +102,10 @@ function init_charts() {
 	            fontSize: 25,
 	            fontFamily: "Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif",
 	            text: 'Chance of Success'
-	        }
+	        },
+	        tooltips: {
+	            enabled: false
+	       }
 	    }
 	});
 

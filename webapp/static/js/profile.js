@@ -2,10 +2,27 @@
 //		Search T+1 - Profile
 //////////////////////////////////////////////////////////////////////
 
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return decodeURI(results[1]) || 0;
+    }
+}
 
 // Start function
 $(function() {
 	console.log('start')
+	if ($.urlParam("region")) {
+		$("#form-region").val($.urlParam("region")) 
+	} else {
+		$("#form-region").val("2000")
+	}
+    $('input').change(function() {
+		submit_onclick()
+	});
 	submit_onclick()
 })
 
@@ -47,10 +64,7 @@ function getData(region, measure, callback) {
 function submit_onclick() 
 {
 	
-	var region = "";
-	$('#form-region option:selected').each(function(index, brand) {
-		region = $(this).val();
-	});
+	var region = $('#form-region').val()
 	
 	var measures = []
 	$('#form-measure  option:selected').each(function(index, brand){
@@ -110,7 +124,7 @@ function drawChartWithData(region, measure, data)
 	if (!chart) {
 		div = $("<div class='graph'></div>"); 
 		$("#container").append(div)
-		
+
 		Highcharts.chart(div[0], {
 		    chart: {
 		        zoomType: 'xy'
@@ -142,22 +156,27 @@ function drawChartWithData(region, measure, data)
 		        name: measure,
 		        type: 'column',
 		        yAxis: 0,
-		        data: data.values,
-//		        tooltip: {
-//		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
-//		        }
+		        //data: data.values,
+		        data: [data.values[0], data.values[1], data.values[2],
+		               {y:data.values[3], color:'#cc0099'},
+		               {y:data.values[4], color:'#cc0099'},
+		               {y:data.values[5], color:'#cc0099'}],
+		        tooltip: {
+		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.0f}</b> '
+		        },
 		    }, {
 		        name: measure + ' error',
 		        type: 'errorbar',
 		        yAxis: 0,
 		        data: data.errors,
 		        tooltip: {
-		            pointFormat: '(error range: {point.low}-{point.high})<br/>'
+		            pointFormat: '<br/>(error range: {point.low:.0f}-{point.high:.0f})<br/>'
 		        }
 		    }],
 		    region: region,
 		    measure: measure
 		});	
+		
 	}
 	
 }

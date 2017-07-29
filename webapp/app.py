@@ -3,7 +3,6 @@ from flask import abort
 from flask import request
 from flask import make_response
 from flask import Flask,redirect
-from statsmodels.base.model import Results
 import pandas as pd 
 import ast
 import numpy as np
@@ -65,6 +64,100 @@ def get_data_table():
     }
 
     return jsonify(results), 201
+
+## Success stuff at end so no conflicts
+
+###################### Cut and paste from here
+import xgboost as xgb
+import pandas as pd
+def create_startup_success_model():
+    import numpy as np
+    import pandas as pd
+    from sklearn import model_selection, preprocessing
+    import xgboost as xgb
+
+    # Load dataset from a csv file
+    df_data = pd.read_csv('../data/neisdatagovhack.csv')
+
+    TARGET = 'successful'
+
+    y_train = df_data[TARGET] == 'Y'
+    x_train = df_data.drop([TARGET], axis=1)
+
+    usable_cols = [
+        'industry_type',
+        'state',
+        'metro',
+        'age_group',
+        'gender_cd',
+        'sole_parent_ind',
+        'neis_allowance_ind',
+        'sv_hours_work',
+        'sv_staff_lt35h',
+        'sv_staff_gt35h']
+
+    x_train = x_train[usable_cols]
+    print('x_train.dtypes', x_train.dtypes)
+
+    # can't merge train with test because the kernel run for very long time
+
+    LEs = {}
+    for c in x_train.columns:
+        if x_train[c].dtype == 'object':
+            lbl = preprocessing.LabelEncoder()
+            lbl.fit(list(x_train[c].values)) 
+            LEs[c] = lbl
+            x_train[c] = lbl.transform(list(x_train[c].values))
+
+    dtrain = xgb.DMatrix(x_train, label=y_train)
+
+    xgb_params = {
+        'eta': 0.05,
+        'max_depth': 5,
+        'subsample': 0.7,
+        'colsample_bytree': 0.7,
+        'objective': 'binary:logistic',
+        'silent': 1,
+    }
+    
+    cv_output = xgb.cv(xgb_params, dtrain, num_boost_round=1000, early_stopping_rounds=20,
+        verbose_eval=10, show_stdv=False, folds=5)
+    cv_output[['test-error-mean','test-error-std','train-error-mean','train-error-std']].plot()
+    model = xgb.train(dict(xgb_params, silent=0), dtrain, num_boost_round=len(cv_output))
+    return usable_cols, LEs, model
+
+# Train the model
+usable_cols, LEs, model = None, None, None
+
+
+# Predict 
+def predict(form_data):
+    global usable_cols, LEs, model
+    if (not model):
+        usable_cols, LEs, model = create_startup_success_model()
+    x_train = pd.DataFrame(data=[[form_data[k] for k in usable_cols]], columns=usable_cols)
+    x_train['metro'] = pd.to_numeric(x_train['metro'], errors='coerce')
+    x_train['sv_hours_work'] = pd.to_numeric(x_train['sv_hours_work'], errors='coerce')
+    x_train['sv_staff_lt35h'] = pd.to_numeric(x_train['sv_staff_lt35h'], errors='coerce')
+    x_train['sv_staff_gt35h'] = pd.to_numeric(x_train['sv_staff_gt35h'], errors='coerce')
+    for c in x_train.columns:
+        if (LEs.get(c, None)):
+            lbl = LEs[c]
+            x_train[c] = lbl.transform(list(x_train[c].values))
+    dtrain = xgb.DMatrix(x_train)
+    return model.predict(dtrain)[0]
+
+############ End cut and past
+
+# Call with 
+#   curl -i -H "Content-Type: application/json" -X POST -d '{"region":"2114","measure":"70-74 years"}' http://localhost:5000/api/data
+@app.route('/api/success', methods=['POST'])
+def success():
+    if not request.get_json():
+        abort(400)
+    result = float(predict(request.get_json()))
+    return jsonify(result), 201
+
 
 if __name__ == '__main__':
     app.run(debug=True)

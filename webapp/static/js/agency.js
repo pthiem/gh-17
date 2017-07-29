@@ -66,7 +66,7 @@ function getData(region, measure, callback) {
         success : function(data) {
             // you can see the result from the console
             // tab of the developer tools
-            console.log("ajax data", data)
+            //console.log("ajax data", data)
             callback(region, measure, data)
         },
         error: function(xhr, resp, text) {
@@ -97,6 +97,14 @@ function submit_onclick()
 	}
 	
 	// remove any charts that are no longer selected
+	$("#container .graph").each(function(i, c) { 
+		var chart = $(c).highcharts()
+		console.log('Consider Remove', chart.options.measure, measures)
+		if ($.inArray(chart.options.measure, measures) == -1) {
+			$(c).remove()
+		} 
+	})	
+	
 	
 	return false
 }

@@ -39,7 +39,8 @@
 
 // Start function
 $(function() {
-	console.log('start') 
+	console.log('start')
+	submit_onclick()
 })
 
 

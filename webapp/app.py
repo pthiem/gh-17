@@ -10,7 +10,8 @@ app = Flask(__name__, static_url_path='/static')
 
 # TODO: Load data from csv file 
 
-df_data = pd.DataFrame() # TODO
+df_data = pd.read_csv('data.csv',index_col=None) # TODO
+df_data = df_data.where((pd.notnull(df_data)), None)
 
 @app.route('/')
 def start():
@@ -31,13 +32,15 @@ def get_data():
     region = request.get_json()["region"]
     measure = request.get_json()["measure"]
 
+    df_slice = df_data.loc[(df_data['regions'] == int(region)) & (df_data['measures'] == measure),:]
+
     #  TODO get Results
     results = {
-        'region': region,
-        'measures': measure,
-        'years': [2011, 2016, 2021],
-        'values': [100, 110, 120],
-        'errors': [None, None, [110,130]]
+        'region': df_slice['regions'].tolist(),
+        'measures': df_slice['measures'].tolist(),
+        'years': df_slice['years'].tolist(),
+        'values': df_slice['values'].tolist(),
+        'errors': list(df_slice['errors'].values)
     }
 
     return jsonify(results), 201

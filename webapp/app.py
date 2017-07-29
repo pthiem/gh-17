@@ -5,6 +5,7 @@ from flask import make_response
 from flask import Flask,redirect
 from statsmodels.base.model import Results
 import pandas as pd 
+import ast
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -40,7 +41,7 @@ def get_data():
         'measures': df_slice['measures'].tolist(),
         'years': df_slice['years'].tolist(),
         'values': df_slice['values'].tolist(),
-        'errors': list(df_slice['errors'].values)
+        'errors': [ast.literal_eval(l) if l else l for l in list(df_slice['errors'].values)]
     }
 
     return jsonify(results), 201

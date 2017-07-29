@@ -148,7 +148,8 @@ fieldset[disabled] .btn-xl.active {
 }
 .navbar-custom {
   background-color: #222222;
-  border-color: transparent;
+  xptxborder-color: transparent;
+  background: "#333333";
 }
 .navbar-custom .navbar-brand {
   color: #fed136;
@@ -199,7 +200,8 @@ fieldset[disabled] .btn-xl.active {
 }
 @media (min-width: 768px) {
   .navbar-custom {
-    background-color: transparent;
+    xptxbackground-color: transparent;
+    background: "#333333";
     padding: 25px 0;
     -webkit-transition: padding 0.3s;
     -moz-transition: padding 0.3s;

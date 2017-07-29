@@ -114,7 +114,7 @@ function drawChartWithData(region, measure, data)
 	        text: 'Rainfall'
 	    },
 	    xAxis: [{
-	        categories: ['2006', '2011', '2016', '2021', '2026', '2031']
+	        categories: data.years
 	    }],
 	    yAxis: [{ // Primary yAxis
 	        labels: {
@@ -139,7 +139,7 @@ function drawChartWithData(region, measure, data)
 	        name: 'Rainfall',
 	        type: 'column',
 	        yAxis: 0,
-	        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0],
+	        data: data.values,
 	        tooltip: {
 	            //pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
 	        }
@@ -147,7 +147,7 @@ function drawChartWithData(region, measure, data)
 	        name: 'Rainfall error',
 	        type: 'errorbar',
 	        yAxis: 0,
-	        data: [null, null, null, [48, 51], [68, 73], [92, 110]],
+	        data: data.errors,
 	        tooltip: {
 	            pointFormat: '(error range: {point.low}-{point.high})<br/>'
 	        }

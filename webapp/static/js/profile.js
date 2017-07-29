@@ -2,10 +2,27 @@
 //		Search T+1 - Profile
 //////////////////////////////////////////////////////////////////////
 
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return decodeURI(results[1]) || 0;
+    }
+}
 
 // Start function
 $(function() {
 	console.log('start')
+	if ($.urlParam("region")) {
+		$("#form-region").val($.urlParam("region")) 
+	} else {
+		$("#form-region").val("2000")
+	}
+    $('input').change(function() {
+		submit_onclick()
+	});
 	submit_onclick()
 })
 
@@ -47,10 +64,7 @@ function getData(region, measure, callback) {
 function submit_onclick() 
 {
 	
-	var region = "";
-	$('#form-region option:selected').each(function(index, brand) {
-		region = $(this).val();
-	});
+	var region = $('#form-region').val()
 	
 	var measures = []
 	$('#form-measure  option:selected').each(function(index, brand){

@@ -63,9 +63,10 @@
                         <a class="page-scroll" href="search.html">Search</a>
                     </li>
                     
-                     <li>
+                    <li>
                         <a class="page-scroll" href="about.html">About</a>
                     </li>
+                    
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -73,64 +74,74 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-lead-in">we predict the future for your businesses target market</div>
-                <div class="intro-heading">Search<sub>t+1</sub></div>
-                <a href="profile.html" class="btn btn-xl">Profile</a>
-            </div>
-        </div>
-    </header>
-
- 
-    <!-- About Section -->
-<!--     
-    <section id="about">
+    <!-- Services Section -->
+    <section id="profile">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">About</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
+                    <h2 class="section-heading">Search</h2>
+					<form id="profile-form" class="pred-form form-inline" role="form" >
+						<div class="form-group">
+
+						<div class="form-group">
+							<label for="sepal_width">
+								Measure
+							</label>
+
+							<select id="form-measure" name="measure" class="form-control multi-select">
+								<option value="0-4 years">0-4 years</options>
+								<!-- <option value="5-9 years">5-9 years</options>
+								<option value="10-14 years">10-14 years</options>
+								<option value="15-19 years">15-19 years</options> -->
+								<option value="20-24 years">20-24 years</options>
+								<!-- <option value="25-29 years">25-29 years</options>
+								<option value="30-34 years">30-34 years</options>
+								<option value="35-39 years">35-39 years</options> -->
+								<option value="40-44 years">40-44 years</options>
+								<!-- <option value="45-49 years">45-49 years</options>
+								<option value="50-54 years">50-54 years</options>
+								<option value="55-59 years">55-59 years</options> -->
+								<option value="60-64 years" >60-64 years</options>
+								<!-- <option value="65-69 years">65-69 years</options>
+								<option value="70-74 years">70-74 years</options>
+								<option value="75-79 years">75-79 years</options> -->
+								<option value="80-84 years">80-84 years</options>
+								<!-- <option value="85-89 years">85-89 years</options>
+								<option value="90-94 years">90-94 years</options>
+								<option value="95-99 years">95-99 years</options>
+								<option value="100 years and over">100 years and over</options> -->
+								<option value="Oceanian">Oceanian</options>
+								<option value="North-West European"  >North-West European</options>
+								<option value="Southern and Eastern European">Southern and Eastern European</options>
+								<option value="North African and Middle Eastern">North African and Middle Eastern</options>
+								<option value="South-East Asian">South-East Asian</options>
+								<option value="North-East Asian">North-East Asian</options>
+								<!-- <option value="Southern and Central Asian">Southern and Central Asian</options>
+								<option value="People of the Americas">People of the Americas</options>
+								<option value="Sub-Saharan African">Sub-Saharan African</options> -->
+								<option value="Male" >Male</options>
+								<option value="Female">Female</options>
+								<option value="under or 0">Income under or 0</options>
+								<option value="$1 to 1000">Income $1 to 1000</options>
+								<option value="1000-1999">Income 1000-1999</options>
+								<option value="2000+">Income 2000+</options>
+								<option value="Married in a registered marriage">Married in a registered marriage</options>
+								<option value="Married in a de facto marriage">Married in a de facto marriage</options>
+								<option value="Not married">Not married</options>							    
+							    
+							</select>							
+							
+						</div>
+					</form>                        
+					<br />                
+
+					<div id="container"></div>                
                 
                 </div>
             </div>
         </div>
     </section>
- -->
- 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <span class="copyright">Copyright &copy; Your Website 2016</span>
-                </div>
-                <div class="col-md-4">
-                    <ul class="list-inline social-buttons">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <ul class="list-inline quicklinks">
-                        <li><a href="#">Privacy Policy</a>
-                        </li>
-                        <li><a href="#">Terms of Use</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+
 
 
     <!-- jQuery -->
@@ -157,6 +168,9 @@
 	<!-- Bootstrap-Multiselect -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>	
 	
+	<!-- Our javascript -->
+    <script src="js/search.js"></script>
+	
 	<!-- Initialize the plugin: -->
 	<script type="text/javascript">
 	    $(document).ready(function() {
@@ -172,3 +186,4 @@
 </body>
 
 </html>
+

@@ -1,0 +1,12 @@
+#container .graph {
+	height: 300px;
+	width: 300px;
+	margin: 0.5em;
+	border: 1px solid lightgray;
+}
+#container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-top: 1em;
+}

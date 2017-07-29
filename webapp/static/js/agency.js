@@ -113,61 +113,80 @@ function drawChartWithData(region, measure, data)
 {
 	// find chart for measure
 	
-	// insert/update the chart
+	var chart = null
+	$("#container .graph").each(function(i, c) { 
+		if (measure == $(c).highcharts().options.measure) {
+			chart = $(c).highcharts()
+		} 
+	})	
 	
-	div = $("#container").append( "<div class='graph'></div>" )[0]
+	if (chart) {
+		// update the chart
+		chart.xAxis[0].setCategories(data.years);
+		chart.series[1].update({
+		    data: data.values
+		}, false);		
+		chart.series[1].update({
+		    data: data.errors
+		}, true); //true to redraw		
+	}
 	
-	Highcharts.chart(div, {
-	    chart: {
-	        zoomType: 'xy'
-	    },
-	    title: {
-	        text: 'Rainfall'
-	    },
-	    xAxis: [{
-	        categories: data.years
-	    }],
-	    yAxis: [{ // Primary yAxis
-	        labels: {
-	            //format: '{value}',
-	            style: {
-	                color: Highcharts.getOptions().colors[1]
-	            }
-	        },
-	        title: {
-	            text: 'Rainfall',
-	            style: {
-	                color: Highcharts.getOptions().colors[1]
-	            }
-	        }
-	    }],
-
-	    tooltip: {
-	        shared: true
-	    },
-
-	    series: [{
-	        name: 'Rainfall',
-	        type: 'column',
-	        yAxis: 0,
-	        data: data.values,
-	        tooltip: {
-	            //pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
-	        }
-	    }, {
-	        name: 'Rainfall error',
-	        type: 'errorbar',
-	        yAxis: 0,
-	        data: data.errors,
-	        tooltip: {
-	            pointFormat: '(error range: {point.low}-{point.high})<br/>'
-	        }
-	    }]
-	});	
+	// insert the chart
+	if (!chart) {
+		div = $("<div class='graph'></div>"); 
+		$("#container").append(div)
+		
+		Highcharts.chart(div[0], {
+		    chart: {
+		        zoomType: 'xy'
+		    },
+		    title: {
+		        text: measure
+		    },
+		    xAxis: [{
+		        categories: data.years
+		    }],
+		    yAxis: [{ // Primary yAxis
+		        labels: {
+		            //format: '{value}',
+		            style: {
+		                color: Highcharts.getOptions().colors[1]
+		            }
+		        },
+		        title: {
+		            text: measure,
+		            style: {
+		                color: Highcharts.getOptions().colors[1]
+		            }
+		        }
+		    }],
 	
-	// update the chart data
+		    tooltip: {
+		        shared: true
+		    },
 	
-	// draw the chart
+		    series: [{
+		        name: measure,
+		        type: 'column',
+		        yAxis: 0,
+		        data: data.values,
+		        tooltip: {
+		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
+		        }
+		    }, {
+		        name: measure + ' error',
+		        type: 'errorbar',
+		        yAxis: 0,
+		        data: data.errors,
+		        tooltip: {
+		            pointFormat: '(error range: {point.low}-{point.high})<br/>'
+		        }
+		    }],
+		    region: region,
+		    measure: measure
+		});	
+	}
+	
 }
 
 

@@ -6,6 +6,7 @@ from flask import Flask,redirect
 from statsmodels.base.model import Results
 import pandas as pd 
 import ast
+import numpy as np
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -46,6 +47,23 @@ def get_data():
 
     return jsonify(results), 201
 
+@app.route('/api/search', methods=['POST'])
+def get_data_table():
+    if not request.get_json():
+        abort(400)
+    measure = request.get_json()["measure"]
+    
+    region_growth = df_data.loc[df_data.loc[:,'measures'] == measure,:].groupby('regions').apply(
+        lambda x: (x['values'].values[1] - x['values'].values[0])/
+        x['values'].values[0]).sort_values(ascending=False)
+    region_growth = region_growth[np.isfinite(region_growth)]*100
+
+    results = {
+        'region': region_growth.index.tolist(),
+        'average_growth_rate': region_growth.tolist(),
+    }
+
+    return jsonify(results), 201
 
 if __name__ == '__main__':
     app.run(debug=True)

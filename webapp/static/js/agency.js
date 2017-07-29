@@ -148,39 +148,37 @@ function drawChartWithData(region, measure, data)
 		    chart: {
 		        zoomType: 'xy'
 		    },
+		    legend: {
+		    	enabled: false
+		    },
+		    credits: {
+		    	enabled: false
+		    },
 		    title: {
 		        text: measure
 		    },
 		    xAxis: [{
-		        categories: data.years
+		        categories: data.years,
+		        title: {
+		            text: null
+		        }		        
 		    }],
 		    yAxis: [{ // Primary yAxis
-		        labels: {
-		            //format: '{value}',
-		            style: {
-		                color: Highcharts.getOptions().colors[1]
-		            }
-		        },
 		        title: {
-		            text: measure,
-		            style: {
-		                color: Highcharts.getOptions().colors[1]
-		            }
+		            text: null
 		        }
 		    }],
-	
 		    tooltip: {
 		        shared: true
 		    },
-	
 		    series: [{
 		        name: measure,
 		        type: 'column',
 		        yAxis: 0,
 		        data: data.values,
-		        tooltip: {
-		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
-		        }
+//		        tooltip: {
+//		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
+//		        }
 		    }, {
 		        name: measure + ' error',
 		        type: 'errorbar',

@@ -57,10 +57,11 @@ def get_data_table():
         lambda x: (x['values'].values[1] - x['values'].values[0])/
         x['values'].values[0]).sort_values(ascending=False)
     region_growth = region_growth[np.isfinite(region_growth)]*100
+    region_growth = np.round(region_growth)
+    region_growth = [[i,j] for i,j in zip(region_growth.index.tolist(),region_growth.tolist())]
 
     results = {
-        'region': region_growth.index.tolist(),
-        'average_growth_rate': region_growth.tolist(),
+        'data': region_growth
     }
 
     return jsonify(results), 201

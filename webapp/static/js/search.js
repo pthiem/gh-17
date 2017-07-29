@@ -19,13 +19,10 @@ function objectifyForm(formArray) {
   return returnArray;
 }
 
-
-
-
 // Returns a json data for the region, measure (as per the API)
 function getData(measure, callback) {
     $.ajax({
-        url: '/api/data', // url where to submit the request
+        url: '/api/search', // url where to submit the request
         type : "POST", // type of action POST || GET
         dataType : 'json', // data type
         contentType: 'application/json', 
@@ -34,7 +31,7 @@ function getData(measure, callback) {
             // you can see the result from the console
             // tab of the developer tools
             //console.log("ajax data", data)
-            callback(region, measure, data)
+            callback(measure, data)
         },
         error: function(xhr, resp, text) {
             console.log(xhr, resp, text);
@@ -60,7 +57,6 @@ function submit_onclick()
 
 function updateTable(measure) 
 {
-	console.log("updateTabe", measure)
 	// get the data for the measure, then update it
 	getData(measure, drawTableWithData)
 }
@@ -68,7 +64,28 @@ function updateTable(measure)
 // Callback to the ajax get data function
 function drawTableWithData(measure, data) 
 {
-	
+    var table = $('#searchTable').DataTable();
+    table.clear()
+    table.rows.add(data.data)
+    table.draw()
 }
 
-
+$(function() {
+    $('#searchTable').DataTable( {
+        columns: [
+            {title: 'Region' },
+            {title: 'Average growth rate %' }
+        ],
+        order: [
+            [1,'desc']
+        ],
+	columnDefs:  [
+	{
+		"targets": 1,
+		"render": function ( data, type, row ) {
+		    return '<a href="/static/profile.html?region='+data+'">'+data+'</a>';
+		},
+	}
+	]
+    });
+})

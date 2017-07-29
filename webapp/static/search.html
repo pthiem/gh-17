@@ -34,6 +34,7 @@
 
 	<!-- Bootstrap-Multiselect -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" />
 
 </head>
 
@@ -135,7 +136,9 @@
 					</form>                        
 					<br />                
 
-					<div id="container"></div>                
+					<div id="container">
+                                        <table id="searchTable" class="display" width="100%"></table>
+                                        </div>                
                 
                 </div>
             </div>
@@ -167,6 +170,7 @@
 	
 	<!-- Bootstrap-Multiselect -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>	
+	<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>	
 	
 	<!-- Our javascript -->
     <script src="js/search.js"></script>

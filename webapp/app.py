@@ -3,24 +3,14 @@ from flask import abort
 from flask import request
 from flask import make_response
 from flask import Flask,redirect
+from statsmodels.base.model import Results
+import pandas as pd 
 
 app = Flask(__name__, static_url_path='/static')
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
+# TODO: Load data from csv file 
 
+df_data = pd.DataFrame() # TODO
 
 @app.route('/')
 def start():
@@ -32,89 +22,26 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
-def get_tasks():
-    return jsonify({'tasks': [task for task in tasks]})
-
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
-def get_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    return jsonify({'task': task[0]})
-
-
-@app.route('/todo/api/v1.0/tasks', methods=['POST'])
-def create_task():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    task = {
-        'id': tasks[-1]['id'] + 1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    tasks.append(task)
-    return jsonify({'task': task}), 201
-
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['PUT'])
-def update_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify({'task': task[0]})
-
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
-def delete_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    tasks.remove(task[0])
-    return jsonify({'result': True})
-
-
-######################################################
-# This gets cut and paste to flask app
-
-import pickle
-import pandas as pd
-import sklearn
-from sklearn.pipeline import Pipeline
-import numpy as np
-
-pipe = pickle.load( open('model.pkl', 'rb') ) # Change path
-
-def _predict(request_dict):
-    values = [
-        request_dict['sepal_length'],
-        request_dict['sepal_width'],
-        request_dict['petal_length'],
-        request_dict['petal_width']
-        ]
-    values = [np.nan if value == '' else value for value in values]
-    values = [values]
-    pred = pipe.predict_proba(values)[0]
-    return pred
-
-######################################################
-
 # Call with 
-#   curl -i -H "Content-Type: application/json" -X POST -d '{"sepal_length":"5.1","sepal_width":"3.5","petal_length":"1.4","petal_width":"0.2"}' http://localhost:5000/api/predict
-@app.route('/api/predict', methods=['POST'])
+#   curl -i -H "Content-Type: application/json" -X POST -d '{"region":"2114","measure":"70-74 years"}' http://localhost:5000/api/data
+@app.route('/api/data', methods=['POST'])
 def predict():
     if not request.get_json():
         abort(400)
-    pred = _predict(request.get_json())
-    pred = [float(p) for p in pred]
-    return jsonify({'classification': pred}), 201
+    region = request.get_json()["region"]
+    measure = request.get_json()["measure"]
+
+    #  TODO get Results
+    results = {
+        'region': region,
+        'measures': measure,
+        'years': [2011, 2016, 2021],
+        'values': [100, 110, 120],
+        'low': [None, None, 110],
+        'high': [None, None, 130]
+    }
+
+    return jsonify(results), 201
 
 
 if __name__ == '__main__':

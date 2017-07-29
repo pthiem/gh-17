@@ -3,7 +3,6 @@ from flask import abort
 from flask import request
 from flask import make_response
 from flask import Flask,redirect
-from statsmodels.base.model import Results
 import pandas as pd 
 import ast
 import numpy as np

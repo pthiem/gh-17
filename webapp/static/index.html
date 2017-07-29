@@ -93,30 +93,18 @@
 			</div>
             <div class="row">
                 <div class="col-md-6 text-center">
-					<form id="pred-form" class="pred-form" role="form">
+					<form id="profile-form" class="pred-form" role="form">
 						<div class="form-group">
 							<label for="f1">
-								sepal_length
+								Region
 							</label>
-							<input type="text" class="form-control" name="sepal_length" value="2">
+							<input type="text" class="form-control" name="region" value="2">
 						</div>
 						<div class="form-group">
 							<label for="sepal_width">
-								sepal_width
+								Measure
 							</label>
-							<input type="text" class="form-control" name="sepal_width">
-						</div>
-						<div class="form-group">
-							<label for="petal_length">
-								petal_length
-							</label>
-							<input type="text" class="form-control" name="petal_length">
-						</div>
-						<div class="form-group">
-							<label for="petal_width">
-								petal_width
-							</label>
-							<input type="text" class="form-control" name="petal_width">
+							<input type="text" class="form-control" name="measure" value="70-74 years">
 						</div>
 						<button type="submit" class="btn btn-default" onclick="return submit_onclick();">
 							Submit
@@ -124,11 +112,11 @@
 					</form>                        
                 </div>
                 <div class="col-md-6 text-center">
-					<div class="chart-container" style="height:200px; width:100px">
-					    <canvas id="myChartA" style="display:none;"></canvas>
-						<canvas id="myChartB" style="display:none;"></canvas>
-						<canvas id="myChartC" style="display:none;"></canvas>
-					</div>                
+                
+
+				<div id="container" style="height: 300px; margin: auto; min-width: 310px; max-width: 200px"></div>                
+                
+                
                 </div>
             </div>
         </div>
@@ -147,6 +135,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
+                
                 </div>
             </div>
         </div>
@@ -198,114 +187,14 @@
 
     <!-- Theme JavaScript -->
     <script src="js/agency.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+	    
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/highcharts-more.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	
 	<script>
-	chartDoughnutTextPlugin = {
-		  beforeDraw: function(chart) {
-		    var width = chart.chart.width,
-		        height = chart.chart.height,
-		        ctx = chart.chart.ctx;
 
-		    ctx.restore();
-		    var fontSize = (height / 114).toFixed(2);
-		    ctx.font = fontSize + "em sans-serif";
-		    ctx.textBaseline = "middle";
 
-		    var text = chart.data.datasets[0].data[0] * 100 + '%'
-		        textX = Math.round((width - ctx.measureText(text).width) / 2),
-		        textY = height / 2;
-
-		    ctx.fillText(text, textX, textY);
-		    ctx.save();
-		  }
-		};		
-	/////////////////////////////
-	var ctx = document.getElementById("myChartA").getContext('2d');
-	var myChartA = new Chart(ctx, {
-	    type: 'pie',
-	    plugins: [chartDoughnutTextPlugin],
-	    data: {
-	        labels: ["Red", "Blue"],
-	        datasets: [{
-	            //label: '',
-	            data: [0, 0, 0],
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0)',
-	            ],
-	            borderColor: [
-	                'rgba(255, 99, 132, 1)',
-	                'rgba(54, 162, 235, 0)',
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	    	cutoutPercentage: '50',
-	        legend: {
-	            display: false
-	        }
-	    }
-	});
-	/////////////////////////////
-	var ctx = document.getElementById("myChartB").getContext('2d');
-	var myChartB = new Chart(ctx, {
-	    type: 'pie',
-	    plugins: [chartDoughnutTextPlugin],
-	    data: {
-	        labels: ["Red", "Blue"],
-	        datasets: [{
-	            //label: '',
-	            data: [0, 0, 0],
-	            backgroundColor: [
-  	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 99, 132, 0)',
-	            ],
-	            borderColor: [
-   	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 99, 132, 0)',
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    
-	    options: {
-	    	cutoutPercentage: '50',
-	        legend: {
-	            display: false
-	        }
-	    }
-	});	
-	/////////////////////////////
-	var ctx = document.getElementById("myChartC").getContext('2d');
-	var myChartC = new Chart(ctx, {
-	    type: 'pie',
-	    plugins: [chartDoughnutTextPlugin],
-	    data: {
-	        labels: ["Red", "Blue"],
-	        datasets: [{
-	            //label: '',
-	            data: [0, 0, 0],
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0)',
-	            ],
-	            borderColor: [
-	                'rgba(255, 99, 132, 1)',
-	                'rgba(54, 162, 235, 0)',
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	    	cutoutPercentage: '50',
-	        legend: {
-	            display: false
-	        }
-	    }
-	});
 		
 	</script>
 

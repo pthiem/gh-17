@@ -25,7 +25,7 @@ def not_found(error):
 # Call with 
 #   curl -i -H "Content-Type: application/json" -X POST -d '{"region":"2114","measure":"70-74 years"}' http://localhost:5000/api/data
 @app.route('/api/data', methods=['POST'])
-def predict():
+def get_data():
     if not request.get_json():
         abort(400)
     region = request.get_json()["region"]
@@ -37,8 +37,7 @@ def predict():
         'measures': measure,
         'years': [2011, 2016, 2021],
         'values': [100, 110, 120],
-        'low': [None, None, 110],
-        'high': [None, None, 130]
+        'errors': [None, None, [110,130]]
     }
 
     return jsonify(results), 201

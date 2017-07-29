@@ -32,6 +32,16 @@
 
 })(jQuery); // End of use strict
 
+//////////////////////////////////////////////////////////////////////
+//		Search T+1 Code
+//////////////////////////////////////////////////////////////////////
+
+
+// Start function
+$(function() {
+	console.log('start') 
+})
+
 
 // serialize data function in a nicer object way so can be json nicely.
 function objectifyForm(formArray) {
@@ -43,31 +53,120 @@ function objectifyForm(formArray) {
 }
 
 
-function submit_onclick() {
+
+
+// Returns a json data for the region, measure (as per the API)
+function getData(region, measure, callback) {
     $.ajax({
-        url: '/api/predict', // url where to submit the request
+        url: '/api/data', // url where to submit the request
         type : "POST", // type of action POST || GET
         dataType : 'json', // data type
         contentType: 'application/json', 
-        data : JSON.stringify(objectifyForm($('#pred-form').serializeArray())), // post data || get data
-        success : function(result) {
+        data : JSON.stringify({region:region, measure:measure}), // post data || get data
+        success : function(data) {
             // you can see the result from the console
             // tab of the developer tools
-            console.log(result);
-            $('#myChartA').fadeIn()
-        	myChartA.data.datasets[0].data = [result.classification[0], 1-result.classification[0]]
-        	myChartA.update()
-            $('#myChartB').fadeIn()
-        	myChartB.data.datasets[0].data = [result.classification[1], 1-result.classification[1]]
-        	myChartB.update()
-            $('#myChartC').fadeIn()
-        	myChartC.data.datasets[0].data = [result.classification[2], 1-result.classification[2]]
-        	myChartC.update()
+            console.log(data)
+            callback(region, measure, data)
         },
         error: function(xhr, resp, text) {
             console.log(xhr, resp, text);
         }
     })	
-	
-	return false;
 }
+
+// This is called after the form changes
+// Will redraw the charts 
+function submit_onclick() 
+{
+	region = "2114"
+	measures = ["70-74 years", "Oceanic"]
+	
+	// for each measure
+	updateChart("2114", "70-74 years")
+	
+	// remove any charts that are no longer selected
+	
+	
+	return false
+}
+
+function updateChart(region, measure) 
+{
+	// get the data for the measure, then update it
+	getData(region, measure, drawChartWithData)
+}
+
+// Callback to the ajax get data function
+function drawChartWithData(region, measure, data) 
+{
+	// find chart for measure
+	
+	// insert/update the chart
+	
+	div = $("#container").append( "<div class='graph'></div>" )[0]
+	
+	Highcharts.chart(div, {
+	    chart: {
+	        zoomType: 'xy'
+	    },
+	    title: {
+	        text: 'Rainfall'
+	    },
+	    xAxis: [{
+	        categories: ['2006', '2011', '2016', '2021', '2026', '2031']
+	    }],
+	    yAxis: [{ // Primary yAxis
+	        labels: {
+	            //format: '{value}',
+	            style: {
+	                color: Highcharts.getOptions().colors[1]
+	            }
+	        },
+	        title: {
+	            text: 'Rainfall',
+	            style: {
+	                color: Highcharts.getOptions().colors[1]
+	            }
+	        }
+	    }],
+
+	    tooltip: {
+	        shared: true
+	    },
+
+	    series: [{
+	        name: 'Rainfall',
+	        type: 'column',
+	        yAxis: 0,
+	        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0],
+	        tooltip: {
+	            //pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
+	        }
+	    }, {
+	        name: 'Rainfall error',
+	        type: 'errorbar',
+	        yAxis: 0,
+	        data: [null, null, null, [48, 51], [68, 73], [92, 110]],
+	        tooltip: {
+	            pointFormat: '(error range: {point.low}-{point.high})<br/>'
+	        }
+	    }]
+	});	
+	
+	// update the chart data
+	
+	// draw the chart
+}
+
+
+function removeChart(feature, measure) {
+	
+	// find chart for measure
+	
+	// remove it
+	
+}
+
+
+

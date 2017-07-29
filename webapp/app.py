@@ -72,7 +72,6 @@ import pandas as pd
 def create_startup_success_model():
     import numpy as np
     import pandas as pd
-    import matplotlib.pyplot as plt
     from sklearn import model_selection, preprocessing
     import xgboost as xgb
 

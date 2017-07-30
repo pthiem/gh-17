@@ -51,7 +51,9 @@ function getData(region, measure, callback) {
             // you can see the result from the console
             // tab of the developer tools
             //console.log("ajax data", data)
-            callback(region, measure, data)
+        	if (data.values.length > 0) {
+        		callback(region, measure, data)
+        	}
         },
         error: function(xhr, resp, text) {
             console.log(xhr, resp, text);
@@ -101,6 +103,7 @@ function updateChart(region, measure)
 function drawChartWithData(region, measure, data) 
 {
 	// find chart for measure
+	console.log('drawChartWithData')
 	
 	var chart = null
 	$("#container .graph").each(function(i, c) { 
@@ -125,6 +128,16 @@ function drawChartWithData(region, measure, data)
 		div = $("<div class='graph'></div>"); 
 		$("#container").append(div)
 
+		var coloredData = []		
+		$(data.errors).each(function(i,v) {
+			console.log('x', i, v)
+			if (!v) {
+				coloredData.push(data.values[i])
+			} else {
+				coloredData.push({y:data.values[i], color:'#cc0099'})
+			}
+		})
+		
 		Highcharts.chart(div[0], {
 		    chart: {
 		        zoomType: 'xy'
@@ -157,10 +170,7 @@ function drawChartWithData(region, measure, data)
 		        type: 'column',
 		        yAxis: 0,
 		        //data: data.values,
-		        data: [data.values[0], data.values[1], data.values[2],
-		               {y:data.values[3], color:'#cc0099'},
-		               {y:data.values[4], color:'#cc0099'},
-		               {y:data.values[5], color:'#cc0099'}],
+		        data: coloredData,
 		        tooltip: {
 		            pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.0f}</b> '
 		        },

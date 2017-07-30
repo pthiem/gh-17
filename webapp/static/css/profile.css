@@ -12,3 +12,7 @@
 }
 nav #mainNav, nav.navbar-custom {
 }
+
+#searchTable a { 
+    color: #000000;
+}

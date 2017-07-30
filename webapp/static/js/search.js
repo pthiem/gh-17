@@ -81,7 +81,7 @@ $(function() {
         ],
 	columnDefs:  [
 	{
-		"targets": 1,
+		"targets": 0,
 		"render": function ( data, type, row ) {
 		    return '<a href="/static/profile.html?region='+data+'">'+data+'</a>';
 		},
